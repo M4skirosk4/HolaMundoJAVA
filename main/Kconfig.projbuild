@@ -1,0 +1,131 @@
+menu "Example Configuration"
+
+    menu "MQTT"
+    
+    	menu "Broker"
+  
+		config BROKER_URL
+		string "Broker URL"
+		default "mqtt://mqtt.eclipse.org"
+		help
+		    URL of the broker to connect to
+		    
+	endmenu
+            
+        menu "Topic"
+            
+		config FACULTAD
+		string "Facultad"
+		default "Fdi"
+		help
+		    Faculty's UCM where sensor belongs to
+
+		config PISO
+		string "Piso"
+		default "2"
+		help
+		    The number of the floor
+		    
+		config AULA
+		string "Aula"
+		default "10"
+		help
+		    Room where sensor is taking measures
+            
+        endmenu
+               
+	
+    endmenu
+    
+    menu "Frecuencies"
+    
+    	config SAMPLE_FREQ
+		int "Sampling frecuency"
+		default 10
+		help
+		    Frecuency (s) of sampling
+		    
+        config SEND_FREQ
+		int "Sending frecuency"
+		default 4
+		help
+		    Frecuency (s) of sending data
+    endmenu
+    	
+    
+    menu "I2C"
+    
+	    menu "I2C Master"
+		config I2C_MASTER_SCL
+		    int "SCL GPIO Num"
+		    default 19
+		    help
+		        GPIO number for I2C Master clock line.
+
+		config I2C_MASTER_SDA
+		    int "SDA GPIO Num"
+		    default 18
+		    help
+		        GPIO number for I2C Master data line.
+
+		config I2C_MASTER_PORT_NUM
+		    int "Port Number"
+		    default 1
+		    help
+		        Port number for I2C Master device.
+
+		config I2C_MASTER_FREQUENCY
+		    int "Master Frequency"
+		    default 100000
+		    help
+		        I2C Speed of Master device.
+	    endmenu
+
+	    menu "I2C Slave"
+		config I2C_SLAVE_SCL
+		    int "SCL GPIO Num"
+		    default 5
+		    help
+		        GPIO number for I2C Slave clock line.
+
+		config I2C_SLAVE_SDA
+		    int "SDA GPIO Num"
+		    default 4
+		    help
+		        GPIO number for I2C Slave data line.
+
+		config I2C_SLAVE_PORT_NUM
+		    int "Port Number"
+		    default 0
+		    help
+		        Port number for I2C Slave device.
+
+		config I2C_SLAVE_ADDRESS
+		    hex "ESP Slave Address"
+		    default 0x28
+		    help
+		        Hardware Address of I2C Slave Port.
+	    endmenu
+	
+    endmenu
+	    
+    menu "Sleep"
+    
+    	config BEGINNING
+		int "Beginning Deep Sleep"
+		default 22
+		help
+		    Hour at which Deep Sleep mode begins
+		     
+	config END
+		int "Ending Deep Sleep"
+		default 8
+		help
+		    Hour at which Deep Sleep mode ends
+		    
+    endmenu
+    
+    
+         
+
+endmenu
