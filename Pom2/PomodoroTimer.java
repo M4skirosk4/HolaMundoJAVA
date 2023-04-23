@@ -9,6 +9,7 @@ public class PomodoroTimer extends JFrame {
     private JButton startButton;
     private JButton resetButton;
     private JButton settingsButton;
+   
     private int workTime;
     private int breakTime;
     private int timeLeft;
@@ -37,6 +38,7 @@ public class PomodoroTimer extends JFrame {
         resetButton.addActionListener(new ResetListener());
         settingsButton = new JButton("Settings");
         settingsButton.addActionListener(new SettingsListener());
+        
 
         // Configuración del panel
         JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -45,9 +47,17 @@ public class PomodoroTimer extends JFrame {
         panel.add(new JLabel(""));
         panel.add(startButton);
         panel.add(resetButton);
+
+        // crea un panel para el botón en la esquina superior derecha
+        JPanel panelBoton = new JPanel(new BorderLayout());
+        
+        panelBoton.add(settingsButton, BorderLayout.EAST);
+        
+
         add(timeLabel, BorderLayout.CENTER);
         add(panel, BorderLayout.SOUTH);
-        add(settingsButton, BorderLayout.NORTH);
+        add(panelBoton, BorderLayout.NORTH);
+        settingsButton = new JButton("Settings");
     }
 
     // Formato de tiempo para mostrar en la interfaz
