@@ -66,12 +66,7 @@ public class InterfazCronometro extends JFrame {
     setSize(300, 200);
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-
-
-    
   }
-     
-
   public void iniciarCronometro() {
     // crea un nuevo temporizador y lo inicia
     temporizador = new Timer(1000, new ActionListener() {
