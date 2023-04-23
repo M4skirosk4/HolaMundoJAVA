@@ -8,18 +8,23 @@ public class PomodoroTimer extends JFrame {
     private JLabel timeLabel;
     private JButton startButton;
     private JButton resetButton;
+    private JButton settingsButton;
+    private int workTime;
+    private int breakTime;
     private int timeLeft;
     private boolean isWorkTime;
 
     public PomodoroTimer() {
         // Configuración de la ventana
         setTitle("Pomodoro Timer");
-        setSize(300, 150);
+        setSize(300, 250);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Configuración del temporizador
-        timeLeft = 25 * 60; // 25 minutos en segundos
+        workTime = 25 * 60; // 25 minutos en segundos
+        breakTime = 5 * 60; // 5 minutos en segundos
+        timeLeft = workTime;
         isWorkTime = true;
         timer = new Timer(1000, new TimerListener());
 
@@ -30,6 +35,8 @@ public class PomodoroTimer extends JFrame {
         startButton.addActionListener(new StartListener());
         resetButton = new JButton("Reset");
         resetButton.addActionListener(new ResetListener());
+        settingsButton = new JButton("Settings");
+        settingsButton.addActionListener(new SettingsListener());
 
         // Configuración del panel
         JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -40,6 +47,7 @@ public class PomodoroTimer extends JFrame {
         panel.add(resetButton);
         add(timeLabel, BorderLayout.CENTER);
         add(panel, BorderLayout.SOUTH);
+        add(settingsButton, BorderLayout.NORTH);
     }
 
     // Formato de tiempo para mostrar en la interfaz
@@ -57,10 +65,10 @@ public class PomodoroTimer extends JFrame {
                 timer.stop();
                 if (isWorkTime) {
                     isWorkTime = false;
-                    timeLeft = 5 * 60; // 5 minutos de descanso
+                    timeLeft = breakTime;
                 } else {
                     isWorkTime = true;
-                    timeLeft = 25 * 60; // 25 minutos de trabajo
+                    timeLeft = workTime;
                 }
                 // Aquí puedes agregar una alarma o notificación
                 JOptionPane.showMessageDialog(null, isWorkTime ? "¡Hora de trabajar de nuevo!" : "¡Descanso terminado!");
@@ -82,12 +90,42 @@ public class PomodoroTimer extends JFrame {
     private class ResetListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             timer.stop();
-            timeLeft = 25 * 60;
+            timeLeft = workTime;
             isWorkTime = true;
             timeLabel.setText(formatTime(timeLeft));
         }
     }
-
+     // Clase oyente para el botón de ajustes
+     private class SettingsListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            // Crear un diálogo emergente para que el usuario ingrese los intervalos de tiempo
+            JTextField workTimeField = new JTextField(String.valueOf(workTime / 60), 5);
+            JTextField breakTimeField = new JTextField(String.valueOf(breakTime / 60), 5);
+            JPanel panel = new JPanel(new GridLayout(2, 2));
+            panel.add(new JLabel("Tiempo de trabajo (min):"));
+            panel.add(workTimeField);
+            panel.add(new JLabel("Tiempo de descanso (min):"));
+            panel.add(breakTimeField);
+            int result = JOptionPane.showConfirmDialog(null, panel, "Ajustes", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                // Actualizar los valores de los intervalos de tiempo
+                try {
+                    int newWorkTime = Integer.parseInt(workTimeField.getText()) * 60;
+                    int newBreakTime = Integer.parseInt(breakTimeField.getText()) * 60;
+                    if (newWorkTime > 0 && newBreakTime > 0) {
+                        workTime = newWorkTime;
+                        breakTime = newBreakTime;
+                        resetButton.doClick();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Los intervalos de tiempo deben ser mayores que cero.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Ingresa números válidos.");
+                }
+            }
+        }
+    }
+    
     public static void main(String[] args) {
         PomodoroTimer timer = new PomodoroTimer();
         timer.setVisible(true);
